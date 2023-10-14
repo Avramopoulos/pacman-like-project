@@ -1,0 +1,57 @@
+#ifndef gameEngine_h
+#define gameEngine_h
+
+#include "moving.h"
+#include "malfoy.h"
+#include "potter.h"
+#include "highscore.h"
+#include <dirent.h>
+#include <signal.h>
+
+using namespace std;
+
+
+class GameEngine
+{
+private:
+	HighScore highscore;
+	vector<vector<char>> map;
+	Potter* potter;
+	Potter* hermione;
+	Malfoy* malfoy;
+	int score;
+	WINDOW* scoreWindow;
+	WINDOW* mapWindow;
+	WINDOW* statWindow;
+	WINDOW* menuWindow;
+	WINDOW* difficultyWindow;
+	WINDOW* nameWindow;
+	bool finished;
+	int diamonds;
+	bool alive;
+	bool esc_pressed;
+	string mapFile;
+	string scoreFile;
+	void createMapWindow();
+	void createStatWindow();
+	void refreshStatWindow();
+	void loadMap();
+	void addJewel();
+	void addEnemies(int);
+	void addMalfoy();
+	void initNcurses();
+	void startRound(string);
+	void deadStatWindow();
+	void clearStatWindow();
+	string startMenu();
+	string startDifficultyMenu();
+	void startGame(string);
+	string getName();
+public:
+	GameEngine();
+	~GameEngine();
+	void Init(string,string);
+};
+
+
+#endif

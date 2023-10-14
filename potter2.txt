@@ -1,0 +1,24 @@
+#ifndef POTTER_H
+#define POTTER_H
+
+#include "moving.h"
+#include "malfoy.h"
+#include <iostream>
+
+using namespace std;
+
+class Potter: public Moving
+{
+private:
+	int id;
+	Malfoy* malfoy;
+	char prev_char;
+	WINDOW* mapWindow;
+	vector<int> findShortestPath(int ,int ,int ,int );
+public:
+	Potter(int, int, vector<vector<char>>*, Malfoy*, WINDOW*, int);
+	~Potter();
+	void calculateNextPosition();
+};
+
+#endif

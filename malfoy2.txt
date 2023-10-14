@@ -1,0 +1,31 @@
+#ifndef MALFOY_H
+#define MALFOY_H
+
+#include "moving.h"
+#include <ncurses.h>
+
+using namespace std;
+
+class Malfoy : public Moving
+{
+private:
+	bool mvup();
+	bool mvdown();
+	bool mvleft();
+	bool mvright();
+	bool esc_pressed;
+	WINDOW* mapWindow;
+	int* score;
+	int* diamonds;
+	bool alive;
+public:
+	Malfoy(int, int, vector<vector<char>>*, WINDOW*, int*, int*);
+	~Malfoy();
+	bool getEscPressed()const{return esc_pressed;}
+	bool getAlive()const{return alive;}
+	void setAlive(bool);
+	void calculateNextPosition();
+	void calc_score();
+};
+
+#endif

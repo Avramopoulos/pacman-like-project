@@ -1,0 +1,158 @@
+#include "malfoy.h"
+
+
+Malfoy::Malfoy (int _xLoc, int _yLoc, vector<vector<char>>* _map, WINDOW* _mapWindow, int* _score, int* _diamonds) : Moving(_xLoc, _yLoc, _map)
+{
+	esc_pressed = false;
+	mapWindow = _mapWindow;
+	alive = true;
+	score = _score;
+	diamonds = _diamonds;
+}
+
+Malfoy::~Malfoy() {}
+
+void Malfoy::setAlive(bool alive)
+{
+	this->alive = alive;
+}
+
+bool Malfoy::mvup()
+{
+
+	if ((map->at(yLoc-1)[xLoc]) != '*')
+	{
+		if ((map->at(yLoc-1)[xLoc]) == 'J')
+		{
+			(*score) = (*score) + 10;
+			(*diamonds) = (*diamonds) + 1;
+		}
+
+		mvwaddch(mapWindow, yLoc, xLoc, '.');
+		map->at(yLoc)[xLoc] = '.';
+		yLoc = yLoc - 1;
+		map->at(yLoc)[xLoc] = 'L';
+		wattron(mapWindow,COLOR_PAIR(1));
+		mvwaddch(mapWindow, yLoc, xLoc, 'L');
+		wattroff(mapWindow,COLOR_PAIR(1));
+		return true;
+	}else
+	{
+		return false;
+	}
+}
+
+
+bool Malfoy::mvdown()
+{
+
+	if ((map->at(yLoc+1)[xLoc]) != '*')
+	{
+		if ((map->at(yLoc+1)[xLoc]) == 'J')
+		{
+			(*score) = (*score) + 10;
+			(*diamonds) = (*diamonds) + 1;
+
+		}
+
+		mvwaddch(mapWindow, yLoc, xLoc, '.');
+		map->at(yLoc)[xLoc] = '.';
+		yLoc = yLoc + 1;
+		map->at(yLoc)[xLoc] = 'L';
+		wattron(mapWindow,COLOR_PAIR(1));
+		mvwaddch(mapWindow, yLoc, xLoc, 'L');
+		wattroff(mapWindow,COLOR_PAIR(1));
+		return true;
+	}else
+	{
+		return false;
+	}
+}
+
+bool Malfoy::mvleft()
+{
+
+	if ((map->at(yLoc)[xLoc-1]) != '*')
+	{
+		if ((map->at(yLoc)[xLoc-1]) == 'J')
+		{
+			(*score) = (*score) + 10;
+			(*diamonds) = (*diamonds) + 1;
+		}
+
+		mvwaddch(mapWindow, yLoc, xLoc, '.');
+		map->at(yLoc)[xLoc] = '.';
+		xLoc = xLoc - 1;
+		map->at(yLoc)[xLoc] = 'L';
+		wattron(mapWindow,COLOR_PAIR(1));
+		mvwaddch(mapWindow, yLoc, xLoc, 'L');
+		wattroff(mapWindow,COLOR_PAIR(1));
+		return true;
+	}else
+	{
+		return false;
+	}
+}
+
+
+bool Malfoy::mvright()
+{
+
+	if ((map->at(yLoc)[xLoc+1]) != '*')
+	{
+		if ((map->at(yLoc)[xLoc+1]) == 'J')
+		{
+			(*score) = (*score) + 10;
+			(*diamonds) = (*diamonds) + 1;
+		}
+		
+		mvwaddch(mapWindow, yLoc, xLoc, '.');
+		map->at(yLoc)[xLoc] = '.';
+		xLoc = xLoc + 1;
+		map->at(yLoc)[xLoc] = 'L';
+		wattron(mapWindow,COLOR_PAIR(1));
+		mvwaddch(mapWindow, yLoc, xLoc, 'L');
+		wattroff(mapWindow,COLOR_PAIR(1));
+		return true;
+	}else
+	{
+		return false;
+	}
+}
+
+
+
+void Malfoy::calculateNextPosition()
+{
+	while(true)
+	{
+		bool valid = false;
+		int choice = wgetch(mapWindow);
+		if (choice == 27) // escape char
+		{
+			esc_pressed = true;
+			break;
+		}
+		switch(choice)
+		{
+			case KEY_UP:
+				valid=mvup();
+				break;
+			case KEY_DOWN:
+				valid=mvdown();
+				break;
+			case KEY_LEFT:
+				valid=mvleft();
+				break;
+			case KEY_RIGHT:
+				valid=mvright();
+				break;
+			case 32:	// space bar does nothing
+				valid = true;
+				break;
+		}
+
+		if (valid) 	// valid char entered
+			break;
+	}
+}
